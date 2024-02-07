@@ -1,7 +1,7 @@
 import pyautogui
 import time
 
-def change_windows_global():
+def open_tabs():
     pyautogui.keyDown("win")
     pyautogui.keyDown("tab")
     pyautogui.keyUp("win")
@@ -25,7 +25,7 @@ def select():
     
 
 def main():
-    change_windows_global()
+    open_tabs()
     # n=1
     # while n < 10:
     #     change_widows_local()
