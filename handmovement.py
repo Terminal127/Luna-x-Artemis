@@ -1,18 +1,20 @@
 import cv2
 import mediapipe as mp
 import tabs_handler
+import sys
 
 cv2.CAP_DSHOW = 0
 cap = cv2.VideoCapture(0)
 
-# Check if the camera is opened successfully
+
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5, min_tracking_confidence=0.5)
 mp_draw = mp.solutions.drawing_utils
 
-prev_hand_x = 0  # Store previous hand landmark x-coordinate
+prev_hand_x = 0  
 movement_threshold = 200 
-movement_threshold_x = 150# Adjust this value for sensitivity
+movement_threshold_x = 200# Adjust this value for sensitivity
+movement_threshold_exit = 500
 frame_count = 0  # Counter to keep track of frames
 c = 0  # Gesture count
 
@@ -37,19 +39,23 @@ def open_tabs():
                 index_tip_y = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].y * frame.shape[1]
                 movement_up = index_tip_y - prev_hand_y
 
-                # Determine direction and perform actions
+
                 if movement_up < -movement_threshold:
                     print("Finger moved up:")
-                    tabs_handler.change_windows_global()
+                    cv2.waitKey(1000)
+                    tabs_handler.open_tabs()
                     swipe()
-
+        
                 prev_hand_y = index_tip_y
-
+        
+        cv2.imshow('Hand Gesture', frame)
+        
         if cv2.waitKey(1) == ord('q'):
             break
 
 def swipe():
     global prev_hand_x, frame_count
+    prev_hand_x = 0
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -64,16 +70,23 @@ def swipe():
                 mp_draw.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
                 index_tip_x = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].x * frame.shape[1]
-                
                 movement = index_tip_x - prev_hand_x
                 
-                if movement > movement_threshold:
+                if movement > movement_threshold_x:
                     print("Index finger moved left")
                     tabs_handler.move_left()
-
+                elif movement < -movement_threshold_exit:
+                    
+                    print("exit received")
+                    tabs_handler.select()                    
+                    cv2.waitKey(100)
+                    sys.exit()
                 prev_hand_x = index_tip_x
-
-
+                
+        
+        # cv2.imshow('Hand Gesture', frame)
+        
+        
         if cv2.waitKey(1) == ord('q'):
             break
 
