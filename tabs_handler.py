@@ -1,5 +1,6 @@
 import pyautogui
 import time
+import os
 
 def open_tabs():
     pyautogui.keyDown("win")
@@ -7,6 +8,9 @@ def open_tabs():
     pyautogui.keyUp("win")
     pyautogui.keyUp("tab")
 
+def lockscreen():
+    os.system("rundll32.exe user32.dll,LockWorkStation")
+    
 def move_left():
     pyautogui.press("right")
     
@@ -22,9 +26,8 @@ def fast_tabs():
       
 
 def main():
-    fast_tabs()
-    time.sleep(1)
-    fast_tabs()
+    
+    lockscreen()
 
 if __name__ == "__main__":
     main()
