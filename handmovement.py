@@ -13,16 +13,16 @@ mp_draw = mp.solutions.drawing_utils
 
 prev_hand_x = 0  
 movement_threshold = 200 
-movement_threshold_x = 200# Adjust this value for sensitivity
+movement_threshold_x = 200
 movement_threshold_exit = 500
-frame_count = 0  # Counter to keep track of frames
-c = 0  # Gesture count
+frame_count = 0  
+c = 0  
 
-def open_tabs():
+def show_tabs():
     global prev_hand_y, gesture_count
 
-    gesture_count = 0  # Initialize gesture count within the function
-    prev_hand_y = 0  # Initialize prev_hand_y at the beginning of the function
+    gesture_count = 0
+    prev_hand_y = 0  
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -49,6 +49,8 @@ def open_tabs():
                 prev_hand_y = index_tip_y
         
         cv2.imshow('Hand Gesture', frame)
+        
+    
         
         if cv2.waitKey(1) == ord('q'):
             break
@@ -79,8 +81,42 @@ def swipe():
                     
                     print("exit received")
                     tabs_handler.select()                    
-                    cv2.waitKey(100)
-                    sys.exit()
+                    cap.release()
+                    cv2.destroyAllWindows()
+                prev_hand_x = index_tip_x
+        
+        
+        if cv2.waitKey(1) == ord('q'):
+            break
+
+def fast_swipe():
+    global prev_hand_x, frame_count
+    prev_hand_x = 0
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        results = hands.process(image_rgb)
+
+        if results.multi_hand_landmarks:
+            for hand_landmarks in results.multi_hand_landmarks:
+                mp_draw.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
+
+                index_tip_x = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].x * frame.shape[1]
+                movement = index_tip_x - prev_hand_x
+                
+                if movement > movement_threshold_x:
+                    print("Index finger moved left")
+                    tabs_handler.fast_tabs()
+                
+                elif movement < -movement_threshold_exit:
+                    print("exit received")
+                    tabs_handler.select()                    
+                    cap.release()
+                    cv2.destroyAllWindows()
                 prev_hand_x = index_tip_x
                 
         
@@ -90,14 +126,16 @@ def swipe():
         if cv2.waitKey(1) == ord('q'):
             break
 
+def text():
+    print ("hello world")
 
 def main():
-    open_tabs()
+    # show_tabs()
+    fast_swipe()
     
 
 if __name__ == "__main__":
     main()
-
-# Release the camera and close all windows
-cap.release()
-cv2.destroyAllWindows()
+    # show_tabs()
+    # cap.release()
+    # cv2.destroyAllWindows()
