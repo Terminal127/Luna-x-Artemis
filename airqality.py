@@ -3,7 +3,7 @@ import requests
 import json
 
 # Replace 'YOUR_API_KEY' with your actual API key
-api_key = 'AIzaSyDHbiWAHuck5ZYZ_D8hPDZiTnLyb1CsuqA'
+api_key = ''
 
 url = 'https://airquality.googleapis.com/v1/currentConditions:lookup?key=' + api_key
 
