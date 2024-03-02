@@ -44,11 +44,11 @@ voicetype_mode_pause = None
 class ContinuousRecognition:
     def __init__(self):
         self.speech_config = speechsdk.SpeechConfig(
-            subscription='0b056629cf414956afb50b976d4c5487', region='eastus'
+            subscription='', region='eastus'
         )
 
         # Set the default voice and language
-        self.engine = AzureEngine("0b056629cf414956afb50b976d4c5487", "eastus", "en-US-AmberNeural", rate=15.0)
+        self.engine = AzureEngine("", "eastus", "en-US-AmberNeural", rate=15.0)
         self.stream = TextToAudioStream(self.engine)
         self.speech_config.speech_recognition_language = "en-IN"
 
