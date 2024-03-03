@@ -8,7 +8,7 @@ from googleapiclient.errors import HttpError
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/classroom.courses.readonly"]
-
+#testig the verifird section in github
 def main():
     creds = None
 
