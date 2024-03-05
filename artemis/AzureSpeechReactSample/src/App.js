@@ -12,7 +12,7 @@ export default function App() {
 
     async function sttFromMic() {
         const tokenObj = await getTokenOrRefresh();
-        const speechConfig = speechsdk.SpeechConfig.fromAuthorizationToken(tokenObj.authToken, tokenObj.region);
+        const speechConfig = speechsdk.SpeechConfig.fromSubscription("0b056629cf414956afb50b976d4c5487", "eastus");
         speechConfig.speechRecognitionLanguage = 'en-IN';
         
         const audioConfig = speechsdk.AudioConfig.fromDefaultMicrophoneInput();
@@ -31,7 +31,7 @@ export default function App() {
 
     async function textToSpeech() {
         const tokenObj = await getTokenOrRefresh();
-        const speechConfig = speechsdk.SpeechConfig.fromAuthorizationToken(tokenObj.authToken, tokenObj.region);
+        const speechConfig = speechsdk.SpeechConfig.fromSubscription("0b056629cf414956afb50b976d4c5487", "eastus");
         const myPlayer = new speechsdk.SpeakerAudioDestination();
         updatePlayer(p => {p.p = myPlayer; return p;});
         const audioConfig = speechsdk.AudioConfig.fromSpeakerOutput(player.p);
