@@ -6,7 +6,7 @@ from playsound import playsound
 from pydub import AudioSegment
 import random
 # This example requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
-speech_config = speechsdk.SpeechConfig(subscription="0b056629cf414956afb50b976d4c5487", region="eastus")
+speech_config = speechsdk.SpeechConfig(subscription="", region="eastus")
 audio_config = speechsdk.audio.PullAudioOutputStream()  # Disable audio output
 
 speech_config.speech_synthesis_voice_name = 'en-US-AmberNeural'
