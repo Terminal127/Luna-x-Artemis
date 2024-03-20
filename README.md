@@ -33,5 +33,5 @@ A virtual assistant written in python.
 
 ### Note:
 
-Luna is still in testing phase.
+Luna is still in development phase.
 
