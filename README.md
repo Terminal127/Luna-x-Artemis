@@ -1,5 +1,5 @@
 <p align="center">
-<img align=centre src="[https://github.com/Terminal127/Luna-x-Artemis/blob/main/src/lunavideo.mp4](https://github.com/Terminal127/Luna-x-Artemis/blob/main/src/lunavideo.mp4)" alt=bot width=700 height=400>
+<img align=centre src="https://github.com/Terminal127/Luna-x-Artemis/blob/main/src/lunavideo.mp4" alt=bot width=700 height=400>
 </p>
 
 
