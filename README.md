@@ -31,3 +31,7 @@ A virtual assistant written in python.
 
 "Previously, the code utilized multithreading for concurrent execution. However, due to Python's limitations in true parallelism with multithreading, we opted for asyncio to enable asynchronous programming. This choice was made to leverage Python's asyncio library, which provides a more efficient and scalable approach to handling concurrent tasks. Asynchronous programming with asyncio allows for non-blocking execution, improving overall performance and responsiveness in our application."
 
+### Note:
+
+Luna is still in testing phase.
+
