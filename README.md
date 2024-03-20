@@ -1,4 +1,4 @@
-![Demo Video](https://github.com/Terminal127/Luna-x-Artemis/blob/main/src/lunavideo.mp4)
+![Demo Video]([https://github.com/Terminal127/Luna-x-Artemis/blob/main/src/lunavideo.mp4](https://github.com/Terminal127/Luna-x-Artemis/blob/main/src/lunavideo.gif))
 
 # Luna-x-Artemis
 
