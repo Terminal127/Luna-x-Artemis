@@ -66,7 +66,7 @@ class ContinuousRecognitionApp:
         self.text_box.insert(tk.END, self.current_text)
 
     def get_speech_config(self):
-        speech_key = "0b056629cf414956afb50b976d4c5487"
+        speech_key = ""
         service_region = "eastus"
 
         speech_config = speechsdk.SpeechConfig(subscription=speech_key, region=service_region)

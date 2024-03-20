@@ -68,7 +68,7 @@ private_key_path = "C:\\Users\\KIIT\\Desktop\\courses\\ai\\luna\\New-keypair.pem
 def lock_screen_async():
     while True:
         try:
-            url = "http://3.109.54.85:8080/lock"
+            url = "http://PUBLIC-IP/lock"
             response = requests.get(url)
 
             if response.status_code == 200:
