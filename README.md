@@ -4,27 +4,6 @@
 
 A virtual assistant written in python.
 
-
-## Usage/Examples
-
-```javascript
-import Component from 'my-project'
-
-function App() {
-  return <Component />
-}
-```
-
-
-## Running Tests
-
-To run tests, run the following command
-
-```bash
-  npm run test
-```
-
-
 ## Features
 
 - Gesture Controlled
