@@ -34,4 +34,5 @@ A virtual assistant written in python.
 ### Note:
 
 Luna is still in development phase.
+And yes all the api keys in the commits are rotated 😊
 
