@@ -154,7 +154,7 @@ class ContinuousRecognition:
         sys.exit("exiting...")
 
 if __name__ == "__main__":
-    ogging.basicConfig(level=logging.ERROR)
+    logging.basicConfig(level=logging.ERROR)
     tempaudiofile.cleanup()
     recognition = ContinuousRecognition()
     whatsapp = tempaudiofile.whatsapp_speech()
