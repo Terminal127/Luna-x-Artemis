@@ -10,8 +10,6 @@ import tempaudiofile
 import sys
 import threading
 
-
-
 class ContinuousRecognition:
     def __init__(self):
         self.recognizer = sr.Recognizer()
@@ -21,7 +19,6 @@ class ContinuousRecognition:
         self.speech_synthesizer = self.engine.get_synthesizer()
         self.speech_config = self.engine.get_speech_config()
         self.connection = None
-
 
         # self.recognition_thread = threading.Thread(target=self.continuous_recognition_thread, daemon=True)
         # self.recognition_thread.start()
@@ -175,5 +172,3 @@ if __name__ == "__main__":
     recognition.stream.close()
     tempaudiofile.cleanup()
     sys.exit("exiting...")
-
-
