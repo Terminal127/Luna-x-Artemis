@@ -81,7 +81,7 @@ class ContinuousRecognition:
 
     def speak_text(self, text):
         try:
-            print(text)
+            self.speech_synthesizer.speak_text_async(text).get()
         except Exception as e:
             logging.error(f"Error while speaking text: {e}")
 
