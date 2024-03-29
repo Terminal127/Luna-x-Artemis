@@ -11,12 +11,17 @@ import sys
 import threading
 
 
+
 class ContinuousRecognition:
     def __init__(self):
         self.recognizer = sr.Recognizer()
 
         self.engine = AzureEngine("0b056629cf414956afb50b976d4c5487", "eastus", "en-US-AmberNeural", rate=15.0)
         self.stream = TextToAudioStream(self.engine)
+        self.speech_synthesizer = self.engine.get_synthesizer()
+        self.speech_config = self.engine.get_speech_config()
+        self.connection = None
+
 
         # self.recognition_thread = threading.Thread(target=self.continuous_recognition_thread, daemon=True)
         # self.recognition_thread.start()
@@ -134,6 +139,25 @@ class ContinuousRecognition:
             print("Recognition loop terminated.")
             sys.exit("exiting...")
 
+    def handle_sleep(self):
+        self.speak_text("Going to sleep. Say 'Hello Luna' to wake me up.")
+        self.stream.close()
+        sys.exit("exiting...")
+
+    def handle_shutdown(self):
+        self.speak_text("Goodbye! Have a nice day")
+        sys.exit("exiting...")
+
+    def handle_wake_up(self):
+        self.speak_text("Hello! How can I help you today?")
+        self.stream.feed("Hello! How can I help you today?")
+        self.stream.play_async()
+        self.continuous_recognition_thread()
+
+    def handle_hand_gesture(self):
+        utils.gesture_mode()
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.ERROR)
     tempaudiofile.cleanup()
@@ -148,3 +172,8 @@ if __name__ == "__main__":
     tempaudiofile.change_speed(gesture_response, speed=1.2)
     recognition.greet_user()
     recognition.continuous_recognition_thread()
+    recognition.stream.close()
+    tempaudiofile.cleanup()
+    sys.exit("exiting...")
+
+
