@@ -3,20 +3,22 @@ import whatsapp
 import logging
 import utils
 from RealtimeTTS import TextToAudioStream, AzureEngine
-import pyttsx3
 from datetime import datetime
 from playsound import playsound
 import tempaudiofile
 import sys
-import threading
 
+# import pyttsx3
+# import threading
 
 class ContinuousRecognition:
     def __init__(self):
         self.recognizer = sr.Recognizer()
-
         self.engine = AzureEngine("0b056629cf414956afb50b976d4c5487", "eastus", "en-US-AmberNeural", rate=15.0)
         self.stream = TextToAudioStream(self.engine)
+        self.speech_synthesizer = self.engine.get_synthesizer()
+        self.speech_config = self.engine.get_speech_config()
+        self.connection = None
 
         # self.recognition_thread = threading.Thread(target=self.continuous_recognition_thread, daemon=True)
         # self.recognition_thread.start()
@@ -49,8 +51,7 @@ class ContinuousRecognition:
         elif "sleep" in recognized_text:
             self.handle_sleep()
         elif "shut down" in recognized_text:
-            self.speak_text("Goodbye! Have a nice day")
-            sys.exit("exiting...")
+            self.handle_shutdown()
         elif "initiate" in recognized_text and "hand" in recognized_text and "gesture" in recognized_text:
             playsound(gesture_response)
             self.handle_gesture()
@@ -85,37 +86,46 @@ class ContinuousRecognition:
             logging.error(f"Error while speaking text: {e}")
 
     def handle_whatsapp(self):
-        folder_path = "C:\\Users\\KIIT\\Desktop\\courses\\ai\\luna\\test"
         playsound(whatsapp)
         self.speak_text("This part is very important! Say 'contact' and then the name of the person you want to send the text.")
 
-        query = self.recognizer.recognize_google()  # Change this line
-        print(query.text.lower())
+        try:
+            with sr.Microphone() as source:
+                audio = self.recognizer.listen(source)
 
-        if "contact" in query.text.lower():
-            name = query.text.lower().replace("contact", "").strip().replace(".", "").strip()
-            if name is not None:
-                whatsapp.send_files_in_folder(folder_path, name)
+            query = self.recognizer.recognize_google(audio)
+            print(query.lower())
+
+            if "contact" in query.lower():
+                name = query.lower().replace("contact", "").strip().replace(".", "").strip()
+                if name:
+                    folder_path = "C:\\Users\\KIIT\\Desktop\\courses\\ai\\luna\\test"
+                    whatsapp.send_files_in_folder(folder_path, name)
+        except Exception as e:
+            logging.error(f"Error during WhatsApp handling: {e}")
 
     def luna_response_check(self):
         playsound(luna)
+        pass  
 
     def handle_apps_open(self, app):
         name = app.replace("open", "").strip().replace(".", "").strip()
-        text = f"opening the application"
+        text = f"opening {name}"
+        self.speak_text(text)
         char_iterator = iter(text)
         self.stream.feed(char_iterator)
         self.stream.play_async()
-        if name is not None:
+        if name:
             utils.open_app(name)
 
     def handle_apps_close(self, app):
         name = app.replace("close", "").strip().replace(".", "").strip()
         text = f"closing {name}"
+        self.speak_text(text)
         char_iterator = iter(text)
         self.stream.feed(char_iterator)
         self.stream.play_async()
-        if name is not None:
+        if name:
             utils.close_app(name)
 
     def handle_gesture(self):
@@ -134,6 +144,15 @@ class ContinuousRecognition:
             print("Recognition loop terminated.")
             sys.exit("exiting...")
 
+    def handle_sleep(self):
+        self.speak_text("Going to sleep. Say 'Hello Luna' to wake me up.")
+        self.stream.close()
+        sys.exit("exiting...")
+
+    def handle_shutdown(self):
+        self.speak_text("Goodbye! Have a nice day")
+        sys.exit("exiting...")
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.ERROR)
     tempaudiofile.cleanup()
@@ -148,3 +167,6 @@ if __name__ == "__main__":
     tempaudiofile.change_speed(gesture_response, speed=1.2)
     recognition.greet_user()
     recognition.continuous_recognition_thread()
+    recognition.stream.close()
+    tempaudiofile.cleanup()
+    sys.exit("exiting...")
